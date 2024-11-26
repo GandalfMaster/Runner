@@ -1,5 +1,6 @@
 package com.back.controller.user;
 
+import com.back.dto.RiderDTO;
 import com.back.entity.Order;
 import com.back.result.Result;
 import com.back.service.RiderService;
@@ -7,10 +8,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,5 +29,19 @@ public class RiderController {
         return Result.success(order);
     }
 
+    @PutMapping("/accept")
+    @ApiOperation("骑手接单")
+    public Result acceptOrder(@RequestBody RiderDTO riderDTO) {
 
+        riderService.updateOrderInfo(riderDTO);
+        return Result.success();
+    }
+
+    @GetMapping("/{id}")
+    @ApiOperation("根据骑手ID查询订单信息")
+    public Result<List<Order>> getOrderById(@PathVariable("id") Long riderId, Integer status) {
+
+        List<Order> order = riderService.getOrderInfo(riderId);
+        return Result.success(order);
+    }
 }
