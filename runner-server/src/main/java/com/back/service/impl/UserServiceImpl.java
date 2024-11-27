@@ -98,13 +98,22 @@ public class UserServiceImpl implements UserService {
     public void update(UserDTO userDTO){
         User user = new User();
         BeanUtils.copyProperties(userDTO, user);
-        userMapper.update(user);
+        if(user.getUserId() == null){
+            userMapper.insert(user);
+            BeanUtils.copyProperties(user, userDTO);
+        }else {
+            userMapper.update(user);
+        }
+
 
         Long userId = userDTO.getUserId();
         ticketMapper.deleteById(userId);
         List<Ticket> ticketList = userDTO.getTicketList();
-        ticketList.forEach(ticket -> ticket.setUserId(userId));
-        ticketMapper.insertBatch(ticketList);
+        if(ticketList.size() != 0){
+            ticketList.forEach(ticket -> ticket.setUserId(userId));
+            ticketMapper.insertBatch(ticketList);
+        }
+
     }
 
     /**
