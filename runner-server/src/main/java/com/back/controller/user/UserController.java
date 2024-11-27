@@ -70,9 +70,9 @@ public class UserController {
 
     @GetMapping("/{id}")
     @ApiOperation("查询用户信息")
-    public Result<User> getUserById(@PathVariable("id") Long userId) {
-        User user = userService.getUserInfo(userId);
-        return Result.success(user);
+    public Result<UserDTO> getUserById(@PathVariable("id") Long userId) {
+        UserDTO userDTO = userService.getUserInfo(userId);
+        return Result.success(userDTO);
     }
 
 

@@ -11,7 +11,7 @@ import java.util.List;
 @Mapper
 public interface RiderMapper {
 
-    @Select("select * from orders where status = 0")
+    @Select("select * from orders")
     List<Order> getByStatus();
 
     @Select("select * from orders where rider_id = #{riderId}")

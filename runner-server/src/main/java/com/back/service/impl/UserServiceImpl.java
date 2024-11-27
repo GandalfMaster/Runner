@@ -18,6 +18,7 @@ import com.back.properties.WeChatProperties;
 import com.back.service.UserService;
 import com.back.utils.HttpClientUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.xmlbeans.impl.xb.xsdschema.Attribute;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -122,12 +123,16 @@ public class UserServiceImpl implements UserService {
      * @param userid 用户 ID
      * @return 返回用户信息或错误
      */
-    public User getUserInfo(Long userid){
+    public UserDTO getUserInfo(Long userid){
         User user = userMapper.getByUserid(userid);
         if(user == null){
             throw new AccountNotFoundException(MessageConstant.ACCOUNT_FAILED);
         }
-        return user;
+        UserDTO userDTO = new UserDTO();
+        BeanUtils.copyProperties(user, userDTO);
+        userDTO.setTicketList(ticketMapper.getByUserid(userid));
+
+        return userDTO;
     }
 
 
