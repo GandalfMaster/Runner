@@ -14,4 +14,7 @@ public interface OrderService {
     void updateOrderInfo(OrderDTO orderDTO);
 
     List<Order> getOrder();
+
+
+    List<Order> getOrderInfoFromStatus(Long id, Integer status);
 }

@@ -17,6 +17,9 @@ public interface OrderMapper {
     @Select("select * from orders where user_id = #{userId}")
     List<Order> getByUserid(Long userId);
 
+    @Select("select * from orders where user_id = #{id} and status = #{status}")
+    List<Order> getByStatusAndId(Long id,Integer status);
+
     //@AutoFill(value = OperationType.INSERT)
     void insert(Order order);
 

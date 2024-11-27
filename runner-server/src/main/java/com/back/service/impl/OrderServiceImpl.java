@@ -50,4 +50,16 @@ public class OrderServiceImpl implements OrderService {
     public List<Order> getOrder(){
         return orderMapper.getOrder();
     }
+
+
+    public List<Order> getOrderInfoFromStatus(Long id, Integer status) {
+
+        List<Order> order = orderMapper.getByStatusAndId(id, status);
+        if(order == null){
+            throw new OrderBusinessException(MessageConstant.STATUS_FAILED);
+        }
+        return order;
+    }
+
+
 }

@@ -29,7 +29,7 @@ public class OrderAdminController {
 
     @GetMapping("/{id}")
     public Result<List<Order>> selectOrderById(@PathVariable Long id, Integer status){
-        List<Order> orders = orderService.getOrderInfo(id);
+        List<Order> orders = orderService.getOrderInfoFromStatus(id,status);
         return Result.success(orders);
     }
 }

@@ -21,7 +21,7 @@ public class RiderController {
     @Autowired
     private RiderService riderService;
 
-    @GetMapping("/{order}")
+    @GetMapping("/order")
     @ApiOperation("查询订单信息")
     public Result<List<Order>> getOrderById() {
 

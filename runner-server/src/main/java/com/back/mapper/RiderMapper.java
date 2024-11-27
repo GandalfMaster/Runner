@@ -17,6 +17,6 @@ public interface RiderMapper {
     @Select("select * from orders where rider_id = #{riderId}")
     List<Order> getByRiderid(Long riderId);
 
-    @Update("Update orders set rider_id = #{riderId} WHERE order_id = #{orderId}")
+    @Update("Update orders set rider_id = #{riderId} , status = 1 WHERE order_id = #{orderId}")
     void update(RiderDTO riderDTO);
 }
