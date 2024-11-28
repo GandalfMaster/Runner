@@ -40,6 +40,7 @@ public class OrderController {
     @ApiOperation("更新订单信息")
     public Result updateOrderById(@RequestBody OrderDTO orderDTO) {
         orderService.updateOrderInfo(orderDTO);
+
         return Result.success();
     }
 }

@@ -5,20 +5,16 @@ import com.alibaba.fastjson.JSONObject;
 import com.back.constant.MessageConstant;
 import com.back.dto.UserDTO;
 import com.back.dto.UserLoginDTO;
-import com.back.entity.Order;
 import com.back.entity.Ticket;
 import com.back.entity.User;
 import com.back.exception.AccountNotFoundException;
 import com.back.exception.LoginFailedException;
-import com.back.exception.OrderBusinessException;
-import com.back.mapper.OrderMapper;
 import com.back.mapper.TicketMapper;
 import com.back.mapper.UserMapper;
 import com.back.properties.WeChatProperties;
 import com.back.service.UserService;
 import com.back.utils.HttpClientUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.xmlbeans.impl.xb.xsdschema.Attribute;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,7 +48,8 @@ public class UserServiceImpl implements UserService {
      * @param userLoginDTO
      * @return
      */
-    public User wxLogin(UserLoginDTO userLoginDTO) {
+    @Transactional
+    public User wxRegister(UserLoginDTO userLoginDTO) {
         String openid = getOpenid(userLoginDTO.getCode());
 
         //判断openid是否为空，如果为空表示登录失败，抛出业务异常
@@ -69,7 +66,15 @@ public class UserServiceImpl implements UserService {
                     .openId(openid)
                     .createTime(LocalDateTime.now())
                     .build();
-            userMapper.insert(user);//后绪步骤实现
+            try{
+                userMapper.insert(user);
+            }catch (Exception e){
+                throw new LoginFailedException(MessageConstant.USERNAME_EXIST);
+            }
+
+            //后绪步骤实现
+        }else{
+            throw new LoginFailedException(MessageConstant.LOGIN_EXIST);
         }
 
         //返回这个用户对象
@@ -132,6 +137,7 @@ public class UserServiceImpl implements UserService {
         BeanUtils.copyProperties(user, userDTO);
         userDTO.setTicketList(ticketMapper.getByUserid(userid));
 
+
         return userDTO;
     }
 
@@ -150,5 +156,15 @@ public class UserServiceImpl implements UserService {
         BeanUtils.copyProperties(user, userDTO);
         userDTO.setTicketList(ticketMapper.getByUserid(userId));
         return userDTO;
+    }
+
+
+    public UserDTO wxLogin(String userName) {
+        Long userId = userMapper.getUserIdByUserName(userName);
+        UserDTO user = getUserDTOById(userId);
+        if(user == null){
+            throw new LoginFailedException(MessageConstant.LOGIN_FAILED);
+        }
+        return user;
     }
 }

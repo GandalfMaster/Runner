@@ -4,9 +4,11 @@ package com.back.controller.user;
 import com.back.constant.JwtClaimsConstant;
 import com.back.dto.UserDTO;
 import com.back.dto.UserLoginDTO;
+import com.back.entity.Order;
 import com.back.entity.User;
 import com.back.properties.JwtProperties;
 import com.back.result.Result;
+import com.back.service.RiderService;
 import com.back.service.UserService;
 import com.back.utils.JwtUtil;
 import com.back.vo.UserLoginVO;
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -30,19 +33,22 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private RiderService riderService;
+
  /**
      * 微信登录
      * @param userLoginDTO
      * @return
      */
-    @PostMapping("/login")
-    @ApiOperation("微信登录")
-    public Result<UserLoginVO> login(@RequestBody UserLoginDTO userLoginDTO){
+    @PostMapping("/register")
+    @ApiOperation("微信注册")
+    public Result<UserLoginVO> register(@RequestBody UserLoginDTO userLoginDTO){
 
-        log.info("微信用户登录：{}", userLoginDTO.getCode());
+        log.info("微信用户注册：{}", userLoginDTO.getCode());
 
         //微信登录
-        User user = userService.wxLogin(userLoginDTO);//后绪步骤实现
+        User user = userService.wxRegister(userLoginDTO);//后绪步骤实现
 
         //为微信用户生成jwt令牌
         Map<String, Object> claims = new HashMap<>();
@@ -58,12 +64,41 @@ public class UserController {
 
     }
 
+    @PostMapping("/login")
+    @ApiOperation("微信登录")
+    public Result<UserDTO> login(@RequestBody UserDTO userDTO){
+        String userName = userDTO.getUsername();
+        UserDTO user = userService.wxLogin(userName);
+        return Result.success(user);
+    }
+
+
+
+
     @PutMapping
     @ApiOperation("修改用户信息")
     public Result update(@RequestBody UserDTO userDTO){
 
         log.info("修改用户信息：{}", userDTO);
+
+        List<Order> orderDoneInfo = riderService.getOrderDoneInfo(userDTO.getUserId());
+        int userStar = 0;
+        double sum = 0;
+
+        // 计算所有订单的总评分
+        for (Order order : orderDoneInfo) {
+            sum += order.getOrderStar();
+        }
+
+        // 计算平均评分，假设订单数大于0
+        if (orderDoneInfo.size() > 0) {
+            userStar = (int) Math.round(sum / orderDoneInfo.size()); // 四舍五入
+        }
+
+        // 更新用户信息
+        userDTO.setUserStar(userStar);
         userService.update(userDTO);
+
         return Result.success();
     }
 

@@ -2,7 +2,6 @@ package com.back.service;
 
 import com.back.dto.UserDTO;
 import com.back.dto.UserLoginDTO;
-import com.back.entity.Order;
 import com.back.entity.User;
 
 import java.util.List;
@@ -13,7 +12,7 @@ public interface UserService {
      * @param userLoginDTO
      * @return
      */
-    User wxLogin(UserLoginDTO userLoginDTO);
+    User wxRegister(UserLoginDTO userLoginDTO);
 
     UserDTO getUserInfo(Long id);
 
@@ -22,4 +21,6 @@ public interface UserService {
     List<UserDTO> getAllUsers();
 
     UserDTO getUserDTOById(Long userId);
+
+    UserDTO wxLogin(String userName);
 }

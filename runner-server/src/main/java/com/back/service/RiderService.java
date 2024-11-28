@@ -9,7 +9,9 @@ public interface RiderService {
 
     List<Order> getOrderInfoForRider();
 
-    List<Order> getOrderInfo(Long id);
+    List<Order> getOrderInfo(Long riderId);
 
     void updateOrderInfo(RiderDTO riderDTO);
+
+    List<Order> getOrderDoneInfo(Long riderId);
 }

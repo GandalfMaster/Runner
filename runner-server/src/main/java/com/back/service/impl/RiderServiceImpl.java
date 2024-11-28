@@ -37,4 +37,12 @@ public class RiderServiceImpl implements RiderService {
         }
         return order;
     }
+
+    public List<Order> getOrderDoneInfo(Long riderid){
+        List<Order> order = riderMapper.getOrderDoneByRiderid(riderid);
+        if(order == null){
+            throw new OrderBusinessException(MessageConstant.TICKET_FAILED);
+        }
+        return order;
+    }
 }

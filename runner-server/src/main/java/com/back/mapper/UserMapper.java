@@ -44,4 +44,7 @@ public interface UserMapper {
 
     @Select("select * from user")
     List<UserDTO> getAllUsers();
+
+    @Select("select user_id from user where user_name = #{userName}")
+    Long getUserIdByUserName(String userName);
 }
