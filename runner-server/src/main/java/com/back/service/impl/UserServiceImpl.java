@@ -50,7 +50,10 @@ public class UserServiceImpl implements UserService {
      */
     @Transactional
     public User wxRegister(UserLoginDTO userLoginDTO) {
-        String openid = getOpenid(userLoginDTO.getCode());
+
+        String test = userLoginDTO.getCode();
+        //
+        String openid = getOpenid(test);
 
         //判断openid是否为空，如果为空表示登录失败，抛出业务异常
         if(openid == null){

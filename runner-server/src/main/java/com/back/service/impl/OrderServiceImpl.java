@@ -47,9 +47,6 @@ public class OrderServiceImpl implements OrderService {
         BeanUtils.copyProperties(orderDTO, order);
 
         orderMapper.update(order);
-
-
-
     }
 
     public List<Order> getOrder(){
