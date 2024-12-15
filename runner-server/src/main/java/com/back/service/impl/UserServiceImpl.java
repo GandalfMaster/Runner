@@ -100,7 +100,7 @@ public class UserServiceImpl implements UserService {
 
         JSONObject jsonObject = JSON.parseObject(json);
         String openid = jsonObject.getString("openid");
-        return openid;
+        return code;
     }
 
     @Transactional
@@ -164,10 +164,14 @@ public class UserServiceImpl implements UserService {
 
     public UserDTO wxLogin(String userName) {
         Long userId = userMapper.getUserIdByUserName(userName);
-        UserDTO user = getUserDTOById(userId);
-        if(user == null){
-            throw new LoginFailedException(MessageConstant.LOGIN_FAILED);
-        }
-        return user;
+//        if(userId == null){
+//            throw new LoginFailedException(MessageConstant.USERNAME_NOTFOUND);
+//        }
+        if(userId == null)return null;
+        UserDTO userDTO = getUserDTOById(userId);
+//        if(user == null){
+//            throw new LoginFailedException(MessageConstant.LOGIN_FAILED);
+//        }
+        return userDTO;
     }
 }

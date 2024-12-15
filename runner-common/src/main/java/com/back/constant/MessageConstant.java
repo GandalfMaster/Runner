@@ -15,4 +15,5 @@ public class MessageConstant {
     public static final String STATUS_FAILED = "订单状态异常";
     public static final String LOGIN_EXIST = "注册用户已存在";
     public static final String USERNAME_EXIST = "注册用户已存在";
+    public static final String USERNAME_NOTFOUND = "未找到用户名";
 }

@@ -10,7 +10,7 @@
     <update id="update">
         update user
         <set>
-            <if test="openId!=null">open_id=#{openId},</if>
+<!--            <if test="openId!=null">open_id=#{openId},</if>-->
             <if test="username!=null">user_name=#{username},</if>
             <if test="phone!=null">phone=#{phone},</if>
             <if test="account!=null">account=#{account},</if>

@@ -69,6 +69,11 @@ public class UserController {
     public Result<UserDTO> login(@RequestBody UserDTO userDTO){
         String userName = userDTO.getUsername();
         UserDTO user = userService.wxLogin(userName);
+        log.info("用户信息：{}", user);
+        if(user == null){
+            return Result.error("不存在该用户");
+        }
+
         return Result.success(user);
     }
 
