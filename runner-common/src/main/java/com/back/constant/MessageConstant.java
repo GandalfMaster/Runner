@@ -16,4 +16,5 @@ public class MessageConstant {
     public static final String LOGIN_EXIST = "注册用户已存在";
     public static final String USERNAME_EXIST = "注册用户已存在";
     public static final String USERNAME_NOTFOUND = "未找到用户名";
+    public static final String DATETIME_ERROR = "时间格式错误";
 }

@@ -1,5 +1,6 @@
 package com.back.controller.user;
 
+import com.back.constant.MessageConstant;
 import com.back.dto.OrderDTO;
 import com.back.entity.Order;
 import com.back.result.Result;
@@ -11,6 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 @RestController
@@ -32,6 +36,13 @@ public class OrderController {
     @PostMapping
     @ApiOperation("创建新订单信息")
     public Result getOrderById(@RequestBody OrderDTO orderDTO) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String deliveryTime = orderDTO.getDeliveryTime();
+        try {
+            LocalDateTime.parse(deliveryTime, formatter);
+        } catch (DateTimeParseException e) {
+            return Result.error(MessageConstant.DATETIME_ERROR);
+        }
         orderService.createOrderInfo(orderDTO);
         return Result.success();
     }
