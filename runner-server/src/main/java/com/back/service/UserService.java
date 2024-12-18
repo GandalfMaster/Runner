@@ -16,7 +16,7 @@ public interface UserService {
 
     UserDTO getUserInfo(Long id);
 
-    void update(UserDTO userDTO);
+    boolean update(UserDTO userDTO);
 
     List<UserDTO> getAllUsers();
 

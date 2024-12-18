@@ -102,9 +102,10 @@ public class UserController {
 
         // 更新用户信息
         userDTO.setUserStar(userStar);
-        userService.update(userDTO);
+        if(userService.update(userDTO))return Result.success();
+        else return Result.error("已存在该用户");
 
-        return Result.success();
+
     }
 
 

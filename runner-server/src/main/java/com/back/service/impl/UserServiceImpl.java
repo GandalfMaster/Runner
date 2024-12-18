@@ -104,9 +104,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    public void update(UserDTO userDTO){
+    public boolean update(UserDTO userDTO){
         User user = new User();
         BeanUtils.copyProperties(userDTO, user);
+        if(userMapper.getUserIdByUserName(userDTO.getUsername()) != null)return false;
         if(user.getUserId() == null){
             userMapper.insert(user);
             BeanUtils.copyProperties(user, userDTO);
@@ -122,7 +123,7 @@ public class UserServiceImpl implements UserService {
             ticketList.forEach(ticket -> ticket.setUserId(userId));
             ticketMapper.insertBatch(ticketList);
         }
-
+        return true;
     }
 
     /**
